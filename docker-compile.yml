@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.1.1
+    container_name: mongodb
+    restart: always
+#    networks:
+#      - shared-net
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: "exit 0"
+
+  recipe-service:
+    build: /
+    image: recipe-service
+    container_name: recipe-service
+    depends_on:
+      - mongo
+    restart: always
+#    networks:
+#      - shared-net
+    ports:
+    - 15020:8080
+    healthcheck:
+      test: "exit 0"
+
+networks:
+  shared-net:
+    driver: bridge
